@@ -1,0 +1,148 @@
+{
+  "info": {
+    "_postman_id": "905b5b23-3f67-4e4d-b0df-b2dfc4f0b301",
+    "name": "Urban Farming Platform API",
+    "description": "Representative Postman collection with sample requests and responses for the urban farming backend.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000" },
+    { "key": "adminToken", "value": "replace_with_admin_jwt" },
+    { "key": "vendorToken", "value": "replace_with_vendor_jwt" },
+    { "key": "customerToken", "value": "replace_with_customer_jwt" }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "health"]
+        }
+      },
+      "response": [
+        {
+          "name": "Healthy Response",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "body": "{\n  \"success\": true,\n  \"message\": \"Urban farming backend is healthy.\",\n  \"data\": {\n    \"environment\": \"development\",\n    \"uptimeSeconds\": 12.38,\n    \"timestamp\": \"2026-04-18T00:00:00.000Z\"\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Register Customer",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Asha Rahman\",\n  \"email\": \"asha@example.com\",\n  \"password\": \"CustomerPass123!\",\n  \"role\": \"customer\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/register",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "auth", "register"]
+        }
+      },
+      "response": [
+        {
+          "name": "Customer Registered",
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": "json",
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "body": "{\n  \"success\": true,\n  \"message\": \"Registration successful.\",\n  \"data\": {\n    \"user\": {\n      \"_id\": \"661c10000000000000000011\",\n      \"name\": \"Asha Rahman\",\n      \"email\": \"asha@example.com\",\n      \"role\": \"customer\",\n      \"status\": \"active\"\n    },\n    \"token\": \"jwt_token_here\"\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "List Produce",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/produce?page=1&limit=5",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "produce"],
+          "query": [
+            { "key": "page", "value": "1" },
+            { "key": "limit", "value": "5" }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Produce Page",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "body": "{\n  \"success\": true,\n  \"message\": \"Produce list fetched successfully.\",\n  \"data\": [\n    {\n      \"_id\": \"661c10000000000000001001\",\n      \"name\": \"Organic Basil 1-1\",\n      \"price\": 4.25,\n      \"category\": \"organic-produce\",\n      \"certificationStatus\": \"approved\",\n      \"availableQuantity\": 18,\n      \"isActive\": true\n    }\n  ],\n  \"meta\": {\n    \"page\": 1,\n    \"limit\": 5,\n    \"total\": 100,\n    \"totalPages\": 20\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Create Produce Listing",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{vendorToken}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Fresh Mint Bunch\",\n  \"description\": \"Locally grown mint for teas and garnishes.\",\n  \"price\": 3.95,\n  \"category\": \"organic-produce\",\n  \"availableQuantity\": 25\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/produce",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "produce"]
+        }
+      },
+      "response": [
+        {
+          "name": "Produce Created",
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": "json",
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "body": "{\n  \"success\": true,\n  \"message\": \"Produce created and pending certification review.\",\n  \"data\": {\n    \"_id\": \"661c100000000000000010ff\",\n    \"vendorId\": \"661c10000000000000000101\",\n    \"name\": \"Fresh Mint Bunch\",\n    \"certificationStatus\": \"pending\",\n    \"availableQuantity\": 25,\n    \"isActive\": true\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Approve Produce Certification",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"certificationStatus\": \"approved\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/admin/produce/661c100000000000000010ff/certification",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "admin", "produce", "661c100000000000000010ff", "certification"]
+        }
+      },
+      "response": [
+        {
+          "name": "Produce Approved",
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "body": "{\n  \"success\": true,\n  \"message\": \"Produce certification updated successfully.\",\n  \"data\": {\n    \"_id\": \"661c100000000000000010ff\",\n    \"vendorId\": \"661c10000000000000000101\",\n    \"name\": \"Fresh Mint Bunch\",\n    \"certificationStatus\": \"approved\"\n  }\n}"
+        }
+      ]
+    }
+  ]
+}
