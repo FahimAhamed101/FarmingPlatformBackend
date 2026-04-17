@@ -1,0 +1,51 @@
+{
+  "name": "urban-farming-backend",
+  "version": "1.0.0",
+  "description": "Backend API for the Interactive Urban Farming Platform",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "benchmark": "node scripts/benchmark.js",
+    "seed": "node scripts/seed.js",
+    "seed:reset": "node scripts/seed.js --drop",
+    "migrate:create": "migrate-mongo create",
+    "migrate:up": "migrate-mongo up",
+    "migrate:down": "migrate-mongo down",
+    "migrate:status": "migrate-mongo status"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "mongodb",
+    "urban-farming",
+    "api"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^7.4.1",
+    "express-validator": "^7.2.1",
+    "helmet": "^7.2.0",
+    "hpp": "^0.2.3",
+    "http-status-codes": "^2.3.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.2",
+    "morgan": "^1.10.0",
+    "socket.io": "^4.8.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "xss-clean": "^0.1.4"
+  },
+  "devDependencies": {
+    "autocannon": "^7.15.0",
+    "migrate-mongo": "^14.0.7",
+    "nodemon": "^3.1.9"
+  }
+}
