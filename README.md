@@ -48,13 +48,29 @@ npm install
 ```
 2. Create environment file:
 ```bash
-cp .env.example .env
+Copy-Item .env.example .env
 ```
 3. Update `.env` values.
 4. Run in development:
 ```bash
 npm run dev
 ```
+
+## Local MongoDB Requirement
+
+The API needs a live MongoDB connection before the server will start.
+
+Option 1: local MongoDB
+```bash
+MONGO_URI=mongodb://127.0.0.1:27017/urban_farming
+```
+
+Option 2: MongoDB Atlas
+```bash
+MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/urban_farming
+```
+
+If MongoDB is not running, startup will fail with `ECONNREFUSED 127.0.0.1:27017`.
 
 ## Database Schema And Migrations
 
